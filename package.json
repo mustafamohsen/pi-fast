@@ -1,22 +1,37 @@
 {
   "name": "pi-fast",
-  "version": "0.1.0-alpha.0",
+  "version": "0.1.0-alpha.1",
   "description": "Pi extension for OpenAI Codex Fast mode controls via /fast on|off|status.",
   "type": "module",
-  "private": true,
+  "license": "MIT",
+  "author": "Mustafa Mohsen",
+  "homepage": "https://github.com/mustafamohsen/pi-fast#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mustafamohsen/pi-fast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mustafamohsen/pi-fast/issues"
+  },
   "keywords": [
     "pi-package",
     "pi-extension",
     "codex",
-    "fast-mode"
+    "fast-mode",
+    "openai-codex"
   ],
   "files": [
     "extensions/",
     "src/",
     "README.md",
     "CHANGELOG.md",
+    "LICENSE",
     "package.json"
   ],
+  "publishConfig": {
+    "access": "public",
+    "tag": "alpha"
+  },
   "pi": {
     "extensions": [
       "./extensions/fast-mode.ts"
@@ -27,6 +42,9 @@
     "typecheck": "tsc --noEmit",
     "check": "bun run biome:check && bun run typecheck && bun test",
     "pack:dry-run": "bun pm pack --dry-run",
+    "publish:dry-run": "npm publish --dry-run --tag alpha",
+    "publish:alpha": "npm publish --tag alpha",
+    "publish:alpha:provenance": "npm publish --tag alpha --provenance",
     "format": "biome format --write .",
     "format:check": "biome format .",
     "lint": "biome lint .",

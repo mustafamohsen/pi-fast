@@ -25,6 +25,12 @@ The extension only applies to Pi's built-in `openai-codex` provider. It will not
 
 ## Install
 
+From npm:
+
+```bash
+pi install npm:pi-fast
+```
+
 From this repository:
 
 ```bash
@@ -106,10 +112,12 @@ Useful docs:
 
 GitHub Actions runs `bun run check` and `bun run pack:dry-run` on pushes to `main` and pull requests.
 
-Pushing an alpha tag like `v0.1.0-alpha.0` builds a package tarball and attaches it to a GitHub prerelease. The workflow checks that the tag matches `package.json`. It does not publish to npm.
+Pushing an alpha tag like `v0.1.0-alpha.1` builds a package tarball and attaches it to a GitHub prerelease. The workflow checks that the tag matches `package.json`.
+
+The package is prepared for npm publishing with public access and the `alpha` dist-tag while it is a prerelease. Run `bun run publish:dry-run` before publishing. Use `bun run publish:alpha:provenance` from a supported trusted-publishing CI environment if you want npm provenance.
 
 ## Versioning
 
-This project uses semver prereleases while the extension is alpha. The first alpha is `0.1.0-alpha.0`, tagged as `v0.1.0-alpha.0`.
+This project uses semver prereleases while the extension is alpha. Alpha releases use tags like `v0.1.0-alpha.1`.
 
 See `CHANGELOG.md` for release notes.
