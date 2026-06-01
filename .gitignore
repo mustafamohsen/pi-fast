@@ -1,0 +1,26 @@
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+
+# Dependencies and package manager artifacts
+node_modules/
+.pnpm-store/
+.yarn/
+
+# Build and test outputs
+dist/
+build/
+coverage/
+*.tsbuildinfo
+*.log
+
+# Pi/session/local artifacts
+.pi/sessions/
+.pi/provider-payload.log
+provider-payload.log
+
+# OS/editor noise
+.DS_Store
+.idea/
+.vscode/
