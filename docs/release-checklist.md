@@ -35,3 +35,5 @@ When the user explicitly asks:
 git push origin main
 git push origin v0.1.0-alpha.0
 ```
+
+Pushing an alpha tag runs the release workflow. It verifies the tag matches `package.json`, creates a GitHub prerelease, and attaches the packed `.tgz` artifact. It does not publish to npm.

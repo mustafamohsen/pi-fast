@@ -102,6 +102,12 @@ Useful docs:
 - `docs/validation.md`
 - `docs/git-workflow.md`
 
+## CI and releases
+
+GitHub Actions runs `bun run check` and `bun run pack:dry-run` on pushes to `main` and pull requests.
+
+Pushing an alpha tag like `v0.1.0-alpha.0` builds a package tarball and attaches it to a GitHub prerelease. The workflow checks that the tag matches `package.json`. It does not publish to npm.
+
 ## Versioning
 
 This project uses semver prereleases while the extension is alpha. The first alpha is `0.1.0-alpha.0`, tagged as `v0.1.0-alpha.0`.
