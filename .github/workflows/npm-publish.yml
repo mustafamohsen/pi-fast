@@ -23,8 +23,11 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '24'
           registry-url: 'https://registry.npmjs.org'
+
+      - name: Ensure npm supports trusted publishing
+        run: npm install -g npm@latest
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
@@ -35,5 +38,5 @@ jobs:
       - name: Verify package contents
         run: bun run pack:dry-run
 
-      - name: Publish alpha package with provenance
-        run: npm publish --tag alpha --provenance
+      - name: Publish alpha package
+        run: npm publish --tag alpha

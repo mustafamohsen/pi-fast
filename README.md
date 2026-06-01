@@ -114,7 +114,7 @@ GitHub Actions runs `bun run check` and `bun run pack:dry-run` on pushes to `mai
 
 Pushing an alpha tag like `v0.1.0-alpha.1` builds a package tarball and attaches it to a GitHub prerelease. The workflow checks that the tag matches `package.json`.
 
-The package is prepared for npm publishing with public access and the `alpha` dist-tag while it is a prerelease. Run `bun run publish:dry-run` before publishing. Use `bun run publish:alpha:provenance` from a supported trusted-publishing CI environment if you want npm provenance.
+The package is prepared for npm publishing with public access and the `alpha` dist-tag while it is a prerelease. Run `bun run publish:dry-run` before publishing. The manual `Publish npm` GitHub Actions workflow is configured for npm trusted publishing; npm generates provenance automatically for public packages published that way.
 
 ## Versioning
 

@@ -44,7 +44,6 @@
     "pack:dry-run": "bun pm pack --dry-run",
     "publish:dry-run": "npm publish --dry-run --tag alpha",
     "publish:alpha": "npm publish --tag alpha",
-    "publish:alpha:provenance": "npm publish --tag alpha --provenance",
     "format": "biome format --write .",
     "format:check": "biome format .",
     "lint": "biome lint .",
