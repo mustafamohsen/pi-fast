@@ -31,7 +31,7 @@ Create a Pi extension/package that adds:
 /fast status
 ```
 
-When enabled and a supported Codex model is used, outgoing provider payloads should request Fast mode by setting the Codex/OpenAI service tier to `fast`.
+When enabled and a supported Codex model is used, outgoing provider payloads should request Fast mode by setting the Codex/OpenAI service tier. OpenAI's user-facing Codex config uses `service_tier = "fast"`, while current Codex catalog/request behavior maps the Fast tier to request value `priority`; the implementation should document and test the chosen outbound value.
 
 ## Non-goals
 
@@ -66,14 +66,14 @@ When enabled and a supported Codex model is used, outgoing provider payloads sho
 ### Phase 4: Payload mutation
 
 1. In `before_provider_request`, gate on the active provider/model.
-2. If Fast mode is enabled and the model is supported, set `service_tier: "fast"` on the outgoing provider payload.
-3. If Fast mode is disabled, leave the payload unchanged or remove only the extension-owned `service_tier` value.
+2. If Fast mode is enabled and the model is supported, set the validated Fast request tier on the outgoing provider payload.
+3. If Fast mode is disabled, leave fresh disabled payloads unchanged; after an explicit `/fast off`, send a safe service-tier clear only for supported Codex models.
 4. Report status clearly when Fast mode is enabled but not applicable to the selected model/provider.
 
 ### Phase 5: Validation
 
 1. Unit-test parser and payload mutation helpers.
-2. Dry-run with payload logging to verify `service_tier: "fast"` is present only when expected.
+2. Dry-run with payload logging to verify the validated Fast request tier is present only when expected.
 3. Interactive smoke-test:
    - `/fast status`
    - `/fast on`
@@ -92,7 +92,7 @@ When enabled and a supported Codex model is used, outgoing provider payloads sho
 
 - `/fast on`, `/fast off`, and `/fast status` are registered Pi commands.
 - Fast mode state is visible to the user.
-- When enabled, supported Codex requests include `service_tier: "fast"`.
+- When enabled, supported Codex requests include the validated Fast service-tier request value, currently `service_tier: "priority"` for Pi's Codex payload path.
 - Unsupported models/providers do not silently claim Fast mode is active.
 - Tests cover parsing, state transitions, and payload mutation gates.
 - No secrets are logged or committed.

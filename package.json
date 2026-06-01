@@ -1,0 +1,39 @@
+{
+  "name": "pi-fast",
+  "version": "0.1.0",
+  "description": "Pi extension for OpenAI Codex Fast mode controls via /fast on|off|status.",
+  "type": "module",
+  "private": true,
+  "keywords": [
+    "pi-package",
+    "pi-extension",
+    "codex",
+    "fast-mode"
+  ],
+  "files": [
+    "extensions/",
+    "src/",
+    "README.md",
+    "CHANGELOG.md",
+    "package.json"
+  ],
+  "pi": {
+    "extensions": [
+      "./extensions/fast-mode.ts"
+    ]
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run typecheck && npm test",
+    "pack:dry-run": "npm pack --dry-run"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.14"
+  }
+}

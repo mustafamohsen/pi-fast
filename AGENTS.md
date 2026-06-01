@@ -6,8 +6,8 @@ This repository is for a Pi extension that adds Codex Fast mode controls matchin
 
 ## Current phase
 
-- Planning and repository setup only.
-- Do not implement the extension until the user explicitly asks to build.
+- Implementation is authorized. Keep building, testing, reviewing, and fixing until the extension is a fully workable product.
+- Preserve a single-writer workflow for implementation changes; use subagents for research, planning, and review/QA as needed.
 
 ## Source-of-truth research
 
@@ -31,10 +31,12 @@ Fast mode is not Pi thinking/reasoning level. OpenAI documents it as Codex servi
 ## Git workflow
 
 - Use `main` as the stable branch.
-- Use short-lived feature branches for implementation work, for example `feat/fast-mode-extension`.
-- Commit often and atomically using Conventional Commits.
+- Use short-lived feature branches for implementation work when helpful, for example `feat/fast-mode-extension`.
+- Commit often and atomically without asking the user for permission.
+- Use Conventional Commits for every commit.
 - Include a descriptive commit body explaining what changed and why.
 - Run relevant checks before committing implementation changes.
+- Keep commits scoped: docs, tests, implementation, and fixes should be separate when practical.
 - Never push to a remote unless the user explicitly orders it.
 
 ## Validation expectations once implementation starts
