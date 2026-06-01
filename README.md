@@ -1,6 +1,6 @@
 # pi-fast
 
-Pi package extension for OpenAI Codex Fast mode controls:
+`pi-fast` adds a small `/fast` command to Pi for OpenAI Codex models.
 
 ```text
 /fast on
@@ -8,23 +8,36 @@ Pi package extension for OpenAI Codex Fast mode controls:
 /fast status
 ```
 
-Fast mode is implemented as a Codex service-tier request, not as Pi thinking/reasoning level.
+This is alpha software. It works against the Pi and Codex behavior I verified on 2026-06-01, but OpenAI's Codex service-tier catalog can change. The extension keeps the request tier configurable for that reason.
 
-## Status
+## What it does
 
-Built for Pi `0.78.0` docs and OpenAI Codex docs current as of 2026-06-01.
+OpenAI's Codex docs describe Fast mode as a service tier, not a reasoning setting. This extension follows that model.
 
-## Install locally
+When Fast mode is on and the selected model is supported, the extension adds a service-tier field to Pi's outgoing Codex provider payload. It does not change Pi's thinking level.
+
+Current model allowlist:
+
+- `openai-codex/gpt-5.4`
+- `openai-codex/gpt-5.5`
+
+The extension only applies to Pi's built-in `openai-codex` provider. It will not silently enable Fast mode for custom OpenAI-compatible providers or normal OpenAI API-key usage.
+
+## Install
 
 From this repository:
 
 ```bash
 pi install -l ./
-# or try without installing:
+```
+
+Or try it for one session:
+
+```bash
 pi -e ./extensions/fast-mode.ts
 ```
 
-Then in Pi:
+Restart Pi or run `/reload`, then use:
 
 ```text
 /fast status
@@ -34,15 +47,38 @@ Then in Pi:
 
 ## Behavior
 
-- `/fast on` persists Fast mode in `~/.pi/agent/fast-mode.json`.
-- `/fast off` persists Fast mode off and sends an explicit service-tier clear for supported Codex models. Fresh installs leave disabled requests untouched until the user runs `/fast off`.
-- `/fast status` reports the current setting and whether it applies to the selected model.
-- Requests are mutated only for Pi's built-in OpenAI Codex provider and currently allowlisted models: `gpt-5.4`, `gpt-5.5`.
-- OpenAI's Codex config UX stores user-facing Fast mode as `service_tier = "fast"`. Current Codex catalog/request behavior maps that Fast tier to request value `priority`, so this extension defaults to `service_tier: "priority"` in Pi's provider payload. The value is stored in config so it can be changed if OpenAI's catalog changes.
+`/fast on` saves the setting in `~/.pi/agent/fast-mode.json`.
 
-## Limitations
+`/fast off` saves Fast mode as off. It also sends an explicit service-tier clear for supported Codex models, which avoids sticky Fast state in Codex app-server sessions.
 
-OpenAI documents Fast mode credits for Codex when signed in with ChatGPT. API-key usage uses standard API pricing, so this extension does not claim API-key Fast-credit support.
+A fresh install does not touch disabled Codex requests until you run `/fast off` or `/fast on`.
+
+`/fast status` reports the saved setting and whether it applies to the current model.
+
+## About `fast` vs `priority`
+
+OpenAI's Codex config uses the user-facing value:
+
+```toml
+service_tier = "fast"
+
+[features]
+fast_mode = true
+```
+
+The current Codex catalog/request tier for that Fast mode is `priority`. For Pi's provider payload, this extension defaults to:
+
+```json
+{ "service_tier": "priority" }
+```
+
+If OpenAI changes the catalog value later, update `requestServiceTier` in `~/.pi/agent/fast-mode.json` or ship a new package version.
+
+## Limits
+
+OpenAI documents Fast mode credits for Codex when you are signed in with ChatGPT. API-key usage follows standard API pricing, so this extension does not claim API-key Fast-credit support.
+
+Because the extension mutates the final provider payload, Pi's displayed cost may not include Fast-tier multipliers if the upstream response reports the tier as `default`. The request behavior is the important part; verify billing separately if you rely on cost display.
 
 ## Development
 
@@ -52,8 +88,14 @@ npm run check
 npm run pack:dry-run
 ```
 
-See `docs/execution-plan.md`, `docs/git-workflow.md`, and `docs/validation.md`.
+Useful docs:
+
+- `docs/execution-plan.md`
+- `docs/validation.md`
+- `docs/git-workflow.md`
 
 ## Versioning
 
-This package uses semver. See `CHANGELOG.md` for release notes.
+This project uses semver prereleases while the extension is alpha. The first alpha is `0.1.0-alpha.0`, tagged as `v0.1.0-alpha.0`.
+
+See `CHANGELOG.md` for release notes.

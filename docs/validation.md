@@ -6,14 +6,14 @@ Run before every implementation commit:
 
 ```bash
 npm run check
-npm pack --dry-run
+npm run pack:dry-run
 ```
 
 Current evidence:
 
 - `npm run check` passes TypeScript typecheck and Vitest.
 - Unit tests cover parser behavior, config normalization, provider/model gating, enabled mutation, disabled no-op, explicit clear, and status formatting.
-- `npm pack --dry-run` includes only package runtime files: `README.md`, `package.json`, `extensions/fast-mode.ts`, and `src/fast-mode.ts`.
+- `npm run pack:dry-run` includes only package runtime files: `CHANGELOG.md`, `README.md`, `package.json`, `extensions/fast-mode.ts`, and `src/fast-mode.ts`.
 
 ## Manual Pi smoke test
 
