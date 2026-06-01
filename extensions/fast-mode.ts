@@ -34,12 +34,16 @@ function saveConfig(config: FastModeConfig): void {
   writeFileSync(path, `${JSON.stringify({ ...config, updatedAt: new Date().toISOString() }, null, 2)}\n`, "utf8");
 }
 
+function formatFooterStatus(config: FastModeConfig, model: ExtensionContext["model"]): string {
+  const status = getFastStatus(config, model);
+  const prefix = status.enabled ? "⚡ " : "";
+  const suffix = status.supported ? "" : " (inactive)";
+  return `${prefix}fast:${status.enabled ? "on" : "off"}${suffix}`;
+}
+
 function updateStatus(ctx: ExtensionContext, config: FastModeConfig): void {
   if (!ctx.hasUI) return;
-  const status = getFastStatus(config, ctx.model);
-  const icon = status.enabled ? "⚡" : "fast";
-  const suffix = status.supported ? "" : " (inactive)";
-  ctx.ui.setStatus(STATUS_KEY, `${icon} ${status.enabled ? "fast:on" : "fast:off"}${suffix}`);
+  ctx.ui.setStatus(STATUS_KEY, formatFooterStatus(config, ctx.model));
 }
 
 function notifyStatus(ctx: ExtensionContext, config: FastModeConfig): void {
