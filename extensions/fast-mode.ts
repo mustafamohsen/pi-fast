@@ -36,7 +36,7 @@ function saveConfig(config: FastModeConfig): void {
 
 function formatFooterStatus(config: FastModeConfig, model: ExtensionContext["model"]): string {
   const status = getFastStatus(config, model);
-  const prefix = status.enabled ? "⚡ " : "";
+  const prefix = status.enabled ? "⚡ " : "○ ";
   const suffix = status.supported ? "" : " (inactive)";
   return `${prefix}fast:${status.enabled ? "on" : "off"}${suffix}`;
 }
