@@ -8,14 +8,14 @@ Use this checklist before pushing a release branch or tag.
 2. Run checks:
 
    ```bash
-   npm run check
-   npm run pack:dry-run
+   bun run check
+   bun run pack:dry-run
    ```
 
-3. Check package contents from `npm run pack:dry-run`.
+3. Check package contents from `bun run pack:dry-run`.
 4. Read `README.md` once as a user would.
 5. Confirm `CHANGELOG.md` has an entry for the version.
-6. Confirm `package.json` and `package-lock.json` have the same version.
+6. Confirm `package.json` and `bun.lock` have the expected release version.
 
 ## Tagging
 

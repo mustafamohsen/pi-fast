@@ -25,13 +25,20 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "check": "npm run typecheck && npm test",
-    "pack:dry-run": "npm pack --dry-run"
+    "check": "bun run biome:check && bun run typecheck && bun test",
+    "pack:dry-run": "bun pm pack --dry-run",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --write .",
+    "biome:check": "biome check .",
+    "biome:fix": "biome check --write ."
   },
   "peerDependencies": {
     "@earendil-works/pi-coding-agent": "*"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.4.16",
     "@types/node": "^24.10.1",
     "typescript": "^5.9.3",
     "vitest": "^4.0.14"

@@ -20,6 +20,7 @@ First alpha release.
 - Added persistent config at `~/.pi/agent/fast-mode.json`.
 - Added unit tests for command parsing, config normalization, provider and model gating, payload mutation, disabled behavior, explicit service-tier clearing, and status formatting.
 - Added validation docs and release notes.
+- Added Biome linting, formatting, and import organization rules.
 
 ### Notes
 

@@ -5,15 +5,16 @@
 Run before every implementation commit:
 
 ```bash
-npm run check
-npm run pack:dry-run
+bun run check
+bun run pack:dry-run
 ```
 
 Current evidence:
 
-- `npm run check` passes TypeScript typecheck and Vitest.
+- `bun run check` passes Biome, TypeScript typecheck, and Vitest.
 - Unit tests cover parser behavior, config normalization, provider/model gating, enabled mutation, disabled no-op, explicit clear, and status formatting.
-- `npm run pack:dry-run` includes only package runtime files: `CHANGELOG.md`, `README.md`, `package.json`, `extensions/fast-mode.ts`, and `src/fast-mode.ts`.
+- `bun run pack:dry-run` includes only package runtime files: `CHANGELOG.md`, `README.md`, `package.json`, `extensions/fast-mode.ts`, and `src/fast-mode.ts`.
+- Biome source checks are configured in `biome.jsonc`. Run `bun run biome:fix` to apply safe formatting, lint, and import-organization fixes.
 
 ## Manual Pi smoke test
 

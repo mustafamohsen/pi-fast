@@ -83,9 +83,17 @@ Because the extension mutates the final provider payload, Pi's displayed cost ma
 ## Development
 
 ```bash
-npm install
-npm run check
-npm run pack:dry-run
+bun install
+bun run check
+bun run pack:dry-run
+```
+
+This repo uses Biome for linting, formatting, and import organization:
+
+```bash
+bun run format
+bun run lint
+bun run biome:check
 ```
 
 Useful docs:

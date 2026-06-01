@@ -5,11 +5,11 @@ import { getAgentDir } from "@earendil-works/pi-coding-agent";
 import {
   applyFastModeToPayload,
   defaultConfig,
+  type FastModeConfig,
   formatStatus,
   getFastStatus,
   normalizeConfig,
   parseFastCommand,
-  type FastModeConfig,
 } from "../src/fast-mode.ts";
 
 const STATUS_KEY = "codex-fast";
