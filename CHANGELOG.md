@@ -8,6 +8,12 @@ This project uses semver. Alpha releases use prerelease versions such as `0.1.0-
 
 - No unreleased changes yet.
 
+## [0.1.0-alpha.2] - 2026-06-01
+
+### Packaging
+
+- Switched the npm package name to `@mustafamohsen/pi-fast` for scoped publishing.
+
 ## [0.1.0-alpha.1] - 2026-06-01
 
 ### Fixed
@@ -39,6 +45,7 @@ First alpha release.
 - OpenAI's user-facing Codex config uses `service_tier = "fast"`; the current Codex request tier for that mode is `priority`, so the extension sends `service_tier: "priority"` by default.
 - API-key Fast-credit support is not claimed. OpenAI documents Fast mode credits for Codex when signed in with ChatGPT.
 
-[Unreleased]: https://github.com/mustafamohsen/pi-fast/compare/v0.1.0-alpha.1...HEAD
+[Unreleased]: https://github.com/mustafamohsen/pi-fast/compare/v0.1.0-alpha.2...HEAD
+[0.1.0-alpha.2]: https://github.com/mustafamohsen/pi-fast/compare/v0.1.0-alpha.1...v0.1.0-alpha.2
 [0.1.0-alpha.1]: https://github.com/mustafamohsen/pi-fast/compare/v0.1.0-alpha.0...v0.1.0-alpha.1
 [0.1.0-alpha.0]: https://github.com/mustafamohsen/pi-fast/releases/tag/v0.1.0-alpha.0

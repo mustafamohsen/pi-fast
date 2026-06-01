@@ -1,6 +1,6 @@
 {
-  "name": "pi-fast",
-  "version": "0.1.0-alpha.1",
+  "name": "@mustafamohsen/pi-fast",
+  "version": "0.1.0-alpha.2",
   "description": "Pi extension for OpenAI Codex Fast mode controls via /fast on|off|status.",
   "type": "module",
   "license": "MIT",
