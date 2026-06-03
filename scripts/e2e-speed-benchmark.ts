@@ -1,6 +1,5 @@
 import { spawnSync } from "node:child_process";
-import { existsSync, mkdirSync, renameSync, rmSync, writeFileSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 
 interface Args {
@@ -9,7 +8,6 @@ interface Args {
   model: string;
   prompt: string;
   extension: string;
-  agentDir: string;
   timeoutMs: number;
 }
 
@@ -28,7 +26,6 @@ function parseArgs(): Args {
     model: "openai-codex/gpt-5.5",
     prompt: "Reply with exactly: speed test ok",
     extension: "./extensions/fast-mode.ts",
-    agentDir: process.env.PI_CODING_AGENT_DIR ?? join(process.env.HOME ?? ".", ".pi", "agent"),
     timeoutMs: 120_000,
   };
 
@@ -42,7 +39,6 @@ function parseArgs(): Args {
     if (flag === "--model") args.model = value;
     if (flag === "--prompt") args.prompt = value;
     if (flag === "--extension") args.extension = value;
-    if (flag === "--agent-dir") args.agentDir = value;
     if (flag === "--timeout-ms") args.timeoutMs = Number(value);
     if (flag.startsWith("--")) index += 1;
   }
@@ -60,37 +56,27 @@ function percentile(values: number[], percentileValue: number): number {
   return sorted[Math.max(0, Math.min(index, sorted.length - 1))] ?? Number.NaN;
 }
 
-function writeFastConfig(agentDir: string, enabled: boolean): void {
-  mkdirSync(agentDir, { recursive: true });
-  writeFileSync(
-    join(agentDir, "fast-mode.json"),
-    `${JSON.stringify(
-      {
-        version: 1,
-        enabled,
-        requestServiceTier: "priority",
-        supportedModels: ["gpt-5.4", "gpt-5.5"],
-        clearServiceTier: !enabled,
-        updatedAt: new Date().toISOString(),
-      },
-      null,
-      2,
-    )}\n`,
-    "utf8",
-  );
-}
-
 function runPi(args: Args, mode: "off" | "on", iteration: number): RunResult {
-  writeFastConfig(args.agentDir, mode === "on");
-
   const start = performance.now();
   const result = spawnSync(
     "pi",
-    ["-e", resolve(args.extension), "--model", args.model, "--no-session", "--mode", "text", "-p", args.prompt],
+    [
+      "-e",
+      resolve(args.extension),
+      "--model",
+      args.model,
+      "--fast",
+      mode,
+      "--no-session",
+      "--mode",
+      "text",
+      "-p",
+      args.prompt,
+    ],
     {
       encoding: "utf8",
       timeout: args.timeoutMs,
-      env: { ...process.env, PI_CODING_AGENT_DIR: args.agentDir },
+      env: process.env,
     },
   );
   const elapsedMs = performance.now() - start;
@@ -108,30 +94,20 @@ function runPi(args: Args, mode: "off" | "on", iteration: number): RunResult {
 
 function main(): void {
   const args = parseArgs();
-  const configPath = join(args.agentDir, "fast-mode.json");
-  const backupPath = `${configPath}.speed-benchmark-backup-${Date.now()}`;
-  const hadConfig = existsSync(configPath);
-  if (hadConfig) renameSync(configPath, backupPath);
-
   const results: RunResult[] = [];
-  try {
-    console.log(`Model response speed benchmark: ${args.model}`);
-    console.log(`Prompt: ${args.prompt}`);
-    console.log(`Warmups per mode: ${args.warmups}; measured iterations per mode: ${args.iterations}`);
+  console.log(`Model response speed benchmark: ${args.model}`);
+  console.log(`Prompt: ${args.prompt}`);
+  console.log(`Warmups per mode: ${args.warmups}; measured iterations per mode: ${args.iterations}`);
 
-    for (let index = 0; index < args.warmups; index += 1) {
-      runPi(args, "off", index + 1);
-      runPi(args, "on", index + 1);
-    }
+  for (let index = 0; index < args.warmups; index += 1) {
+    runPi(args, "off", index + 1);
+    runPi(args, "on", index + 1);
+  }
 
-    for (let index = 0; index < args.iterations; index += 1) {
-      // Interleave to reduce time-of-day and transient load bias.
-      results.push(runPi(args, "off", index + 1));
-      results.push(runPi(args, "on", index + 1));
-    }
-  } finally {
-    rmSync(configPath, { force: true });
-    if (hadConfig) renameSync(backupPath, configPath);
+  for (let index = 0; index < args.iterations; index += 1) {
+    // Interleave to reduce time-of-day and transient load bias.
+    results.push(runPi(args, "off", index + 1));
+    results.push(runPi(args, "on", index + 1));
   }
 
   console.table(
