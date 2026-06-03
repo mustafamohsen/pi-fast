@@ -49,7 +49,8 @@
     "lint": "biome lint .",
     "lint:fix": "biome lint --write .",
     "biome:check": "biome check .",
-    "biome:fix": "biome check --write ."
+    "biome:fix": "biome check --write .",
+    "benchmark:e2e": "bun scripts/e2e-speed-benchmark.ts"
   },
   "peerDependencies": {
     "@earendil-works/pi-coding-agent": "*"
