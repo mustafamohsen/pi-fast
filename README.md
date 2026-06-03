@@ -51,7 +51,23 @@ Restart Pi or run `/reload`, then use:
 /fast off
 ```
 
+For one-off CLI runs without changing `~/.pi/agent/fast-mode.json`, use the extension flags:
+
+```bash
+pi -e ./extensions/fast-mode.ts --model openai-codex/gpt-5.5 --fast on -p "say ok"
+pi -e ./extensions/fast-mode.ts --model openai-codex/gpt-5.5 --fast off -p "say ok"
+```
+
+Diagnostics are available with `--fast-verbose 0|1|2|3`:
+
+- `0`: silent
+- `1`: config source / CLI override
+- `2`: provider-request decision, including model, changed, and reason
+- `3`: sanitized payload fields only: `model`, `service_tier`, and `stream`
+
 ## Behavior
+
+`--fast on` and `--fast off` are ephemeral process-level overrides. They do not write `~/.pi/agent/fast-mode.json`.
 
 `/fast on` saves the setting in `~/.pi/agent/fast-mode.json`.
 
@@ -93,6 +109,14 @@ bun install
 bun run check
 bun run pack:dry-run
 ```
+
+To benchmark real model-response latency with Fast mode off vs on:
+
+```bash
+bun run benchmark:e2e -- --iterations 10 --warmups 1
+```
+
+The benchmark launches Pi with `--fast off` and `--fast on`, interleaves runs, and reports median/p95 wall-clock response time. Treat results as noisy unless the latency gap is larger than normal run-to-run variance.
 
 This repo uses Biome for linting, formatting, and import organization:
 
