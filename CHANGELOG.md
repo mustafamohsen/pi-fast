@@ -6,7 +6,14 @@ This project uses semver. Alpha releases use prerelease versions such as `0.1.0-
 
 ## [Unreleased]
 
-- No unreleased changes yet.
+### Added
+
+- Added Fast-mode support for `gpt-5.6`, `gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`, and `gpt-6.1-sol` on the built-in `openai-codex` provider.
+- Added regression tests for model gating, status, payload mutation, and service-tier clearing across all supported models.
+
+### Fixed
+
+- Automatically expand the old saved default model allowlist on load while preserving custom allowlists and other settings.
 
 ## [0.1.0-alpha.2] - 2026-06-01
 

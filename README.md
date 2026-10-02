@@ -20,6 +20,15 @@ Current model allowlist:
 
 - `openai-codex/gpt-5.4`
 - `openai-codex/gpt-5.5`
+- `openai-codex/gpt-5.6`
+- `openai-codex/gpt-6-astra`
+- `openai-codex/gpt-6-sol`
+- `openai-codex/gpt-6-luna`
+- `openai-codex/gpt-6.1-sol`
+
+Newer entries follow OpenAI's [Speed](https://developers.openai.com/codex/speed) and [Models](https://developers.openai.com/codex/models) docs. Availability depends on your plan, client, workspace settings, and rollout. The extension does not add models to Pi's catalog or grant access; run `pi update --models` if your catalog is out of date. Existing GPT-5.4/GPT-5.5 entries remain for compatibility, not as a guarantee of continued availability. Ultrafast is a separate mode and is not enabled by this extension.
+
+Saved configs containing exactly the old default allowlist (`gpt-5.4`, `gpt-5.5`) automatically use the expanded defaults on load. Custom `supportedModels` lists, including empty lists, are preserved; add new IDs to those lists manually.
 
 The extension only applies to Pi's built-in `openai-codex` provider. It will not silently enable Fast mode for custom OpenAI-compatible providers or normal OpenAI API-key usage.
 
