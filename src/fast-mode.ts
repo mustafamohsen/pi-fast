@@ -1,5 +1,15 @@
 export const CONFIG_VERSION = 1;
-export const DEFAULT_SUPPORTED_MODELS = ["gpt-5.4", "gpt-5.5"] as const;
+// Exact IDs only: a newer model or variant does not imply Fast support.
+export const DEFAULT_SUPPORTED_MODELS = [
+  "gpt-5.4",
+  "gpt-5.5",
+  "gpt-5.6",
+  "gpt-6-astra",
+  "gpt-6-sol",
+  "gpt-6-luna",
+  "gpt-6.1-sol",
+] as const;
+const LEGACY_DEFAULT_SUPPORTED_MODELS = ["gpt-5.4", "gpt-5.5"] as const;
 
 export type FastCommandAction = "on" | "off" | "status";
 
@@ -57,6 +67,17 @@ export function normalizeConfig(input: unknown, now = new Date()): FastModeConfi
   const fallback = defaultConfig(now);
   if (!input || typeof input !== "object") return fallback;
   const record = input as Record<string, unknown>;
+  let supportedModels =
+    Array.isArray(record.supportedModels) && record.supportedModels.every((item) => typeof item === "string")
+      ? [...new Set(record.supportedModels.map((item) => item.trim()).filter(Boolean))]
+      : fallback.supportedModels;
+  // Older releases persisted the default list. Upgrade that exact list, but preserve custom allowlists.
+  if (
+    supportedModels.length === LEGACY_DEFAULT_SUPPORTED_MODELS.length &&
+    LEGACY_DEFAULT_SUPPORTED_MODELS.every((id) => supportedModels.includes(id))
+  ) {
+    supportedModels = fallback.supportedModels;
+  }
   return {
     version: CONFIG_VERSION,
     enabled: typeof record.enabled === "boolean" ? record.enabled : fallback.enabled,
@@ -64,10 +85,7 @@ export function normalizeConfig(input: unknown, now = new Date()): FastModeConfi
       typeof record.requestServiceTier === "string" && record.requestServiceTier.trim().length > 0
         ? record.requestServiceTier.trim()
         : fallback.requestServiceTier,
-    supportedModels:
-      Array.isArray(record.supportedModels) && record.supportedModels.every((item) => typeof item === "string")
-        ? [...new Set(record.supportedModels.map((item) => item.trim()).filter(Boolean))]
-        : fallback.supportedModels,
+    supportedModels,
     clearServiceTier:
       typeof record.clearServiceTier === "boolean"
         ? record.clearServiceTier
